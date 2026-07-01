@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M7 Urban Cognitive Readiness Index — NSAG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Syne:wght@500;600;700&family=Manrope:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --nsag:#4D45A8;--nsag-light:#E8E5F5;--m:#B8842A;--m-light:#F9F3E8;
+    --cream:#F6F3EC;--ink:#1C1B1F;--ink-mid:#4A4656;--ink-soft:#8A8497;--white:#FFFFFF;
+    --pioneering:#2E5A28;--emerging:#1B7A68;--developing:#B8842A;--early:#C24A2E;
+    --border:rgba(77,69,168,0.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Manrope',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;}
+  .progress-rail{position:fixed;top:0;left:0;right:0;height:3px;background:var(--nsag-light);z-index:100;}
+  .progress-fill{height:100%;background:var(--m);transition:width 0.4s ease;}
+  header{padding:20px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--white);}
+  .logo{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;letter-spacing:0.12em;color:var(--nsag);text-transform:uppercase;}
+  .module-badge{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.08em;color:var(--m);background:var(--m-light);padding:4px 10px;border-radius:2px;text-transform:uppercase;}
+  .screen{display:none;flex:1;align-items:center;justify-content:center;padding:48px 24px;min-height:calc(100vh - 61px);}
+  .screen.active{display:flex;}
+  .welcome-card{max-width:640px;width:100%;text-align:center;}
+  .welcome-eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--m);text-transform:uppercase;margin-bottom:20px;}
+  .welcome-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,52px);font-weight:600;line-height:1.1;color:var(--ink);margin-bottom:24px;}
+  .welcome-title em{font-style:italic;color:var(--nsag);}
+  .welcome-desc{font-size:16px;line-height:1.7;color:var(--ink-mid);margin-bottom:12px;}
+  .welcome-meta{font-family:'DM Mono',monospace;font-size:12px;color:var(--ink-soft);margin-bottom:40px;}
+  .btn-primary{display:inline-block;background:var(--nsag);color:var(--white);font-family:'Syne',sans-serif;font-weight:600;font-size:14px;letter-spacing:0.04em;padding:14px 36px;border:none;cursor:pointer;transition:background 0.2s;border-radius:2px;}
+  .btn-primary:hover{background:#3D3698;}
+  .disclaimer{margin-top:24px;font-size:12px;color:var(--ink-soft);line-height:1.6;}
+  .question-wrap{max-width:680px;width:100%;}
+  .q-meta{display:flex;align-items:center;gap:12px;margin-bottom:32px;}
+  .q-dimension{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.1em;color:var(--m);text-transform:uppercase;}
+  .q-counter{font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);}
+  .q-text{font-family:'Syne',sans-serif;font-size:clamp(18px,2.5vw,22px);font-weight:600;line-height:1.4;color:var(--ink);margin-bottom:32px;padding-left:16px;border-left:3px solid var(--m);}
+  .options{display:flex;flex-direction:column;gap:12px;margin-bottom:40px;}
+  .option{background:var(--white);border:1.5px solid var(--border);border-radius:4px;padding:16px 20px;cursor:pointer;font-size:15px;line-height:1.5;color:var(--ink-mid);transition:border-color 0.2s,background 0.2s,color 0.2s;text-align:left;}
+  .option:hover{border-color:var(--nsag);color:var(--ink);background:var(--nsag-light);}
+  .option.selected{border-color:var(--nsag);background:var(--nsag-light);color:var(--nsag);font-weight:600;}
+  .q-nav{display:flex;justify-content:space-between;align-items:center;}
+  .btn-back{background:none;border:none;font-family:'Manrope',sans-serif;font-size:14px;color:var(--ink-soft);cursor:pointer;padding:10px 0;}
+  .btn-next{background:var(--nsag);color:var(--white);font-family:'Syne',sans-serif;font-weight:600;font-size:14px;padding:12px 28px;border:none;cursor:pointer;border-radius:2px;transition:background 0.2s,opacity 0.2s;}
+  .btn-next:disabled{opacity:0.35;cursor:not-allowed;}
+  .btn-next:not(:disabled):hover{background:#3D3698;}
+  .calculating-wrap{text-align:center;max-width:480px;}
+  .calc-label{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.1em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:24px;}
+  .calc-number{font-family:'Cormorant Garamond',serif;font-size:96px;font-weight:600;color:var(--nsag);line-height:1;margin-bottom:8px;}
+  .calc-bar{width:100%;height:4px;background:var(--nsag-light);border-radius:2px;overflow:hidden;margin-bottom:24px;}
+  .calc-fill{height:100%;background:var(--m);width:0;transition:width 2s ease;}
+  .result-wrap{max-width:680px;width:100%;}
+  .result-header{margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid var(--border);}
+  .result-eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:16px;}
+  .tier-name{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,8vw,80px);font-weight:600;line-height:1;margin-bottom:16px;opacity:0;transform:translateY(12px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .tier-name.revealed{opacity:1;transform:translateY(0);}
+  .tier-name.pioneering{color:var(--pioneering);}
+  .tier-name.emerging{color:var(--emerging);}
+  .tier-name.developing{color:var(--developing);}
+  .tier-name.early{color:var(--early);}
+  .tier-desc{font-size:16px;line-height:1.7;color:var(--ink-mid);max-width:520px;}
+  .gate-section{background:var(--white);border:1.5px solid var(--border);border-radius:4px;padding:32px;margin-bottom:24px;}
+  .gate-title{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;color:var(--ink);margin-bottom:8px;}
+  .gate-desc{font-size:14px;color:var(--ink-mid);margin-bottom:24px;line-height:1.6;}
+  .gate-form{display:flex;gap:12px;flex-wrap:wrap;}
+  .gate-input{flex:1;min-width:200px;padding:12px 16px;font-family:'Manrope',sans-serif;font-size:14px;border:1.5px solid var(--border);background:var(--cream);color:var(--ink);border-radius:2px;outline:none;transition:border-color 0.2s;}
+  .gate-input:focus{border-color:var(--nsag);}
+  .btn-gate{background:var(--m);color:var(--white);font-family:'Syne',sans-serif;font-weight:600;font-size:14px;padding:12px 24px;border:none;cursor:pointer;border-radius:2px;white-space:nowrap;}
+  .dimensions{display:flex;flex-direction:column;gap:16px;margin-top:24px;}
+  .dimension-row{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:20px 24px;}
+  .dim-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .dim-name{font-family:'Syne',sans-serif;font-weight:600;font-size:13px;color:var(--ink);text-transform:uppercase;letter-spacing:0.05em;}
+  .dim-tier{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.08em;padding:3px 8px;border-radius:2px;}
+  .dim-tier.pioneering{background:#E8F5E6;color:var(--pioneering);}
+  .dim-tier.emerging{background:#E4F3F0;color:var(--emerging);}
+  .dim-tier.developing{background:#FBF3E4;color:var(--developing);}
+  .dim-tier.early{background:#FBE9E6;color:var(--early);}
+  .dim-bar-rail{height:4px;background:var(--nsag-light);border-radius:2px;overflow:hidden;margin-bottom:10px;}
+  .dim-bar-fill{height:100%;border-radius:2px;transition:width 0.8s ease;}
+  .dim-finding{font-size:13px;color:var(--ink-mid);line-height:1.5;}
+  .blurred{filter:blur(6px);pointer-events:none;user-select:none;}
+  .cta-section{margin-top:32px;padding:28px 32px;background:var(--nsag);border-radius:4px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+  .cta-text{color:var(--white);}
+  .cta-text strong{display:block;font-family:'Syne',sans-serif;font-size:15px;margin-bottom:4px;}
+  .cta-text span{font-size:13px;opacity:0.8;}
+  .btn-cta{background:var(--white);color:var(--nsag);font-family:'Syne',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.04em;padding:11px 22px;border:none;border-radius:2px;cursor:pointer;}
+  .success-msg{display:none;background:#E8F5E6;border:1px solid var(--pioneering);border-radius:4px;padding:14px 20px;font-size:14px;color:var(--pioneering);margin-top:12px;}
+  footer{padding:20px 32px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .footer-text{font-size:12px;color:var(--ink-soft);}
+  .footer-link{font-size:12px;color:var(--nsag);text-decoration:none;}
+  .footer-link:hover{text-decoration:underline;}
+  @media(max-width:600px){header{padding:16px 20px;}.screen{padding:32px 16px;}.gate-form{flex-direction:column;}.cta-section{flex-direction:column;align-items:flex-start;}}
+</style>
+</head>
+<body>
+<div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
+<header>
+  <div class="logo">NSAG</div>
+  <div class="module-badge">M7 · Conscious Cities</div>
+</header>
+<div class="screen active" id="screenWelcome">
+  <div class="welcome-card">
+    <div class="welcome-eyebrow">Neurocognitive Systems Advisory Group</div>
+    <h1 class="welcome-title">Urban Cognitive<br><em>Readiness Index</em></h1>
+    <p class="welcome-desc">Every planning decision — where to place a park, how to design a transit station, what zoning permits — is a decision about how residents think, feel, and participate. This assessment measures your city or municipality against six evidence-based dimensions of conscious urban design.</p>
+    <p class="welcome-meta">6 dimensions · 12 questions · 10 minutes</p>
+    <button class="btn-primary" onclick="startAssessment()">Begin Assessment</button>
+    <p class="disclaimer">Your overall tier is shown immediately at no cost. Full dimension breakdown delivered by email.</p>
+  </div>
+</div>
+<div class="screen" id="screenQuestion">
+  <div class="question-wrap">
+    <div class="q-meta"><span class="q-dimension" id="qDimension"></span><span class="q-counter" id="qCounter"></span></div>
+    <div class="q-text" id="qText"></div>
+    <div class="options" id="qOptions"></div>
+    <div class="q-nav">
+      <button class="btn-back" id="btnBack" onclick="prevQuestion()">← Back</button>
+      <button class="btn-next" id="btnNext" onclick="nextQuestion()" disabled>Continue →</button>
+    </div>
+  </div>
+</div>
+<div class="screen" id="screenCalculating">
+  <div class="calculating-wrap">
+    <div class="calc-label">Analyzing your city</div>
+    <div class="calc-number" id="calcNumber">0</div>
+    <div class="calc-bar"><div class="calc-fill" id="calcFill"></div></div>
+    <div class="calc-label" id="calcStatus">Reviewing green space access...</div>
+  </div>
+</div>
+<div class="screen" id="screenResult">
+  <div class="result-wrap">
+    <div class="result-header">
+      <div class="result-eyebrow">Your city is</div>
+      <div class="tier-name" id="tierName"></div>
+      <p class="tier-desc" id="tierDesc"></p>
+    </div>
+    <div class="gate-section" id="gateSection">
+      <div class="gate-title">See your full dimension-by-dimension breakdown</div>
+      <div class="gate-desc">Your complete report shows where your city scores on each of the six conscious design dimensions — with specific findings, data benchmarks, and recommended next steps.</div>
+      <div class="gate-form">
+        <input type="email" class="gate-input" id="gateEmail" placeholder="Work email address" />
+        <input type="text" class="gate-input" id="gateOrg" placeholder="City or municipality name" />
+        <button class="btn-gate" onclick="submitGate()">Send My Report</button>
+      </div>
+      <div class="success-msg" id="gateSuccess">Received. We'll follow up within 24 hours with your full dimension report.</div>
+    </div>
+    <div class="dimensions blurred" id="dimensionsSection"></div>
+    <div class="cta-section">
+      <div class="cta-text">
+        <strong>Ready to move up a tier?</strong>
+        <span>NSAG M7 advisory — from $25,000 for a city engagement.</span>
+      </div>
+      <button class="btn-cta" onclick="window.location.href='mailto:collins.ra@northeastern.edu?subject=NSAG M7 Advisory Inquiry'">Talk to an Advisor</button>
+    </div>
+  </div>
+</div>
+<footer>
+  <span class="footer-text">© 2026 RN Collins LLC · Aloha AI Consulting · NSAG Framework</span>
+  <a href="mailto:collins.ra@northeastern.edu" onclick="navigator.clipboard.writeText('collins.ra@northeastern.edu')" class="footer-link">Contact the Architect</a>
+</footer>
+<script>
+const QUESTIONS = [
+  {dimension:"Green Space Access",dimKey:"green",text:"What percentage of your residents are within a 10-minute walk of quality green space?",options:[{text:"80%+ — at or above WHO standard (1 hectare per 1,000 residents) across all neighborhoods",score:3},{text:"50–79% — majority have access; significant gaps in lower-income neighborhoods",score:2},{text:"20–49% — access is limited and inequitably distributed",score:1},{text:"Under 20% — green space is not accessible to most residents",score:0}]},
+  {dimension:"Green Space Access",dimKey:"green",text:"Does your municipality have an active plan with funded timelines to close green space access gaps?",options:[{text:"Yes — funded plan with accountability milestones and equity weighting",score:3},{text:"Plan exists; not fully funded or equity-weighted",score:2},{text:"Gap acknowledged; planning has not begun",score:1},{text:"No plan and no assessment of current gaps",score:0}]},
+  {dimension:"Air & Acoustic Quality",dimKey:"air",text:"Is air quality monitored at the neighborhood level, with public-facing reporting and defined action thresholds?",options:[{text:"Yes — real-time monitoring, public dashboard, action thresholds defined",score:3},{text:"Monitoring exists; limited neighborhood granularity or public access",score:2},{text:"City-level monitoring only; no neighborhood data",score:1},{text:"No systematic air quality monitoring",score:0}]},
+  {dimension:"Air & Acoustic Quality",dimKey:"air",text:"Does your municipality have noise ordinances that account for cumulative cognitive load in dense residential and civic areas?",options:[{text:"Yes — noise policy accounts for cumulative impact and cognitive health",score:3},{text:"Noise ordinances exist; not specifically calibrated for cognitive health",score:2},{text:"Basic noise ordinances only; enforcement is minimal",score:1},{text:"No noise policy beyond acute nuisance ordinances",score:0}]},
+  {dimension:"Cognitive Accessibility of Civic Spaces",dimKey:"civic",text:"Are your primary public-facing civic spaces (city hall, DMV, community boards, courts) designed to minimize cognitive load?",options:[{text:"Yes — biophilic design, clear wayfinding, plain-language signage, accessible seating formally incorporated",score:3},{text:"Some improvements made; not systematic across all civic spaces",score:2},{text:"Cognitive accessibility acknowledged; no design changes made",score:1},{text:"Not considered — civic spaces designed for durability, not usability",score:0}]},
+  {dimension:"Cognitive Accessibility of Civic Spaces",dimKey:"civic",text:"Is your city's public-facing digital infrastructure (website, services, forms) designed for cognitive accessibility (plain language, screen reader compatible, low literacy accessible)?",options:[{text:"Yes — formal accessibility standard enforced, regularly audited",score:3},{text:"WCAG compliance maintained; plain language is inconsistent",score:2},{text:"Basic accessibility compliance; plain language not a formal standard",score:1},{text:"No formal digital accessibility standard",score:0}]},
+  {dimension:"Policy Legibility",dimKey:"policy",text:"Are municipal policies, notices, and community communications written to a 6th–8th grade reading level for public-facing documents?",options:[{text:"Yes — plain language standard adopted and enforced across communications",score:3},{text:"Plain language used in some communications; not a formal standard",score:2},{text:"Awareness of plain language; no formal policy or auditing",score:1},{text:"No plain language standard — technical and legal language used in public communications",score:0}]},
+  {dimension:"Policy Legibility",dimKey:"policy",text:"Are public notices, zoning changes, and policy proposals communicated in the primary languages of the community?",options:[{text:"Yes — multilingual communications across all primary languages served",score:3},{text:"Translation available for major communications; not comprehensive",score:2},{text:"Translation available on request; not standard practice",score:1},{text:"English only — no translation standard",score:0}]},
+  {dimension:"Participation Infrastructure",dimKey:"participation",text:"Are public participation mechanisms (hearings, surveys, charrettes) designed for genuine accessibility — not just legal compliance?",options:[{text:"Yes — participatory design standard: multiple formats, times, languages, stipends for low-income participants",score:3},{text:"Multiple participation options offered; not all barriers addressed",score:2},{text:"Single participation format (e.g., evening hearings only); compliance-oriented",score:1},{text:"Public hearings are the only mechanism; no accessibility design",score:0}]},
+  {dimension:"Participation Infrastructure",dimKey:"participation",text:"Does your municipality track who participates in public processes against who is affected by them — and act on the gap?",options:[{text:"Yes — demographic tracking of participation with active outreach to underrepresented groups",score:3},{text:"Tracking occurs; gap acknowledgment is informal",score:2},{text:"No tracking of participation demographics",score:1},{text:"Public comment is accepted; participation quality is not monitored",score:0}]},
+  {dimension:"Trauma-Informed Planning",dimKey:"trauma",text:"Do your city planners have training in the trauma histories of communities affected by urban renewal, displacement, or environmental racism?",options:[{text:"Yes — formal trauma-informed planning training required for planning staff",score:3},{text:"Some staff trained; not a universal requirement",score:2},{text:"Awareness exists; no formal training",score:1},{text:"Trauma history of neighborhoods is not incorporated in planning practice",score:0}]},
+  {dimension:"Trauma-Informed Planning",dimKey:"trauma",text:"Does your municipality formally engage community members with lived experience of displacement or environmental harm in planning processes that affect their neighborhoods?",options:[{text:"Yes — community members with lived experience in formal advisory roles",score:3},{text:"Community engagement includes affected communities; roles are consultative not advisory",score:2},{text:"Engagement occurs; affected communities are not specifically prioritized",score:1},{text:"No formal engagement of affected communities in planning processes",score:0}]},
+];
+
+const DIM_FINDINGS = {
+  green: {
+    pioneering: 'Green space access meets or exceeds WHO standards (1 hectare per 1,000 residents) across all neighborhoods, with a funded equity plan in place.',
+    emerging: 'Majority of residents have access but equity gaps persist. A funded improvement plan exists.',
+    developing: 'Green space gaps are acknowledged but a funded plan has not been developed.',
+    early: 'No green space access standard and no plan. The cognitive and mental health cost of this gap falls most heavily on low-income residents.'
+  },
+  air: {
+    pioneering: 'Air quality and noise are monitored at the neighborhood level with public reporting and defined action thresholds.',
+    emerging: 'Monitoring exists with limited neighborhood granularity. Public-facing reporting is a gap.',
+    developing: 'City-level monitoring only — neighborhood disparities are invisible.',
+    early: 'No systematic air quality or noise monitoring. The cognitive load of environmental conditions is entirely untracked.'
+  },
+  civic: {
+    pioneering: 'Civic spaces are formally designed for cognitive accessibility — biophilic elements, plain-language signage, accessible layout — and regularly audited.',
+    emerging: 'Some improvements made, not systematic. At least one redesigned civic space.',
+    developing: 'Cognitive accessibility acknowledged but no design changes implemented.',
+    early: 'Civic spaces are designed for durability, not usability. The cognitive cost of navigating them is borne by residents.'
+  },
+  policy: {
+    pioneering: 'A formal plain language standard is adopted and enforced. All primary communications are multilingual for communities served.',
+    emerging: 'Plain language used in some communications. Translation available but not comprehensive.',
+    developing: 'Awareness of plain language. No formal standard or auditing.',
+    early: 'Technical and legal language in public communications. Most residents cannot fully understand the policies that govern them.'
+  },
+  participation: {
+    pioneering: 'Participatory design is standard — multiple formats, times, languages, and stipends for low-income participants. Demographics tracked against affected populations.',
+    emerging: 'Multiple participation options offered. Not all barriers removed. Some demographic tracking.',
+    developing: 'Single participation format, typically evening hearings. Compliance-oriented rather than genuinely inclusive.',
+    early: 'Public hearings only. No design for genuine accessibility. The people most affected participate least.'
+  },
+  trauma: {
+    pioneering: 'Trauma-informed planning training is required for planning staff. Communities affected by displacement or environmental racism are in formal advisory roles.',
+    emerging: 'Some staff trained. Community engagement includes affected communities in consultative roles.',
+    developing: 'Awareness of trauma history exists. No formal training or structured community engagement.',
+    early: 'Trauma history of neighborhoods is not incorporated in planning practice. Decisions continue to reflect institutional rather than community perspectives.'
+  }
+};
+
+const TIER_INFO = {
+  pioneering:{label:"Pioneering",cssClass:"pioneering",desc:"Your city has built meaningful conscious design infrastructure across multiple dimensions. Green space, air quality, policy legibility, and community participation are actively managed with equity as a core consideration. The work now is to maintain and deepen these systems as growth and resource pressures emerge."},
+  emerging:{label:"Emerging",cssClass:"emerging",desc:"Your city is building in the right direction. Meaningful structures are in place in several dimensions, and leadership has acknowledged cognitive design as a planning priority. The gaps are specific and addressable — targeted investment in the lowest-scoring dimensions will produce measurable improvement in resident wellbeing and civic trust."},
+  developing:{label:"Developing",cssClass:"developing",desc:"Your city has early-stage conscious design infrastructure. Some awareness exists, and individual initiatives have been launched, but systematic integration of cognitive science into urban planning has not yet occurred. The risk of declining civic participation and growing health disparities is real and growing."},
+  early:{label:"Early Stage",cssClass:"early",desc:"Conscious urban design has not yet been formally integrated into your city's planning practice. The cognitive and emotional costs of urban environments are falling on residents without a policy framework to address them. The path forward starts with a leadership conversation and a baseline assessment of green space, air quality, and civic space accessibility."}
+};
+
+let currentQ=0,answers=new Array(QUESTIONS.length).fill(null),scores={};
+function startAssessment(){document.getElementById('screenWelcome').classList.remove('active');document.getElementById('screenQuestion').classList.add('active');renderQuestion(0);}
+function renderQuestion(idx){const q=QUESTIONS[idx];document.getElementById('qDimension').textContent=q.dimension;document.getElementById('qCounter').textContent=(idx+1)+' of '+QUESTIONS.length;document.getElementById('qText').textContent=q.text;document.getElementById('btnBack').style.visibility=idx===0?'hidden':'visible';const optDiv=document.getElementById('qOptions');optDiv.innerHTML='';q.options.forEach((opt,i)=>{const btn=document.createElement('button');btn.className='option'+(answers[idx]===i?' selected':'');btn.textContent=opt.text;btn.onclick=()=>{answers[idx]=i;document.querySelectorAll('.option').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');document.getElementById('btnNext').disabled=false;};optDiv.appendChild(btn);});document.getElementById('progressFill').style.width=(idx/QUESTIONS.length*100)+'%';document.getElementById('btnNext').disabled=answers[idx]===null;currentQ=idx;}
+function nextQuestion(){currentQ<QUESTIONS.length-1?renderQuestion(++currentQ):showCalculating();}
+function prevQuestion(){if(currentQ>0)renderQuestion(--currentQ);}
+function getTier(s){return s>=80?'pioneering':s>=60?'emerging':s>=40?'developing':'early';}
+function calculateScores(){const dr={},dc={};QUESTIONS.forEach((q,i)=>{if(!dr[q.dimKey]){dr[q.dimKey]=0;dc[q.dimKey]=0;}dr[q.dimKey]+=q.options[answers[i]].score;dc[q.dimKey]++;});const dn={};Object.keys(dr).forEach(k=>{dn[k]=Math.round((dr[k]/(dc[k]*3))*100);});scores=dn;const overall=Math.round(Object.values(dn).reduce((a,b)=>a+b,0)/Object.keys(dn).length);return{overall,dimensions:dn};}
+function showCalculating(){document.getElementById('screenQuestion').classList.remove('active');document.getElementById('screenCalculating').classList.add('active');document.getElementById('progressFill').style.width='100%';const phases=["Reviewing green space access...","Analyzing air quality data...","Assessing civic space design...","Evaluating policy legibility...","Reviewing participation infrastructure...","Assessing trauma-informed planning...","Generating your city's report..."];let phase=0;const pi=setInterval(()=>{if(phase<phases.length){document.getElementById('calcStatus').textContent=phases[phase];phase++;}else clearInterval(pi);},400);const final=calculateScores();let count=0;const ci=setInterval(()=>{count=Math.min(count+2,final.overall);document.getElementById('calcNumber').textContent=count;if(count>=final.overall)clearInterval(ci);},30);document.getElementById('calcFill').style.width=final.overall+'%';setTimeout(()=>showResults(final),3000);}
+function showResults(final){document.getElementById('screenCalculating').classList.remove('active');document.getElementById('screenResult').classList.add('active');const tier=getTier(final.overall),info=TIER_INFO[tier];const el=document.getElementById('tierName');el.textContent=info.label;el.className='tier-name '+info.cssClass;setTimeout(()=>el.classList.add('revealed'),100);document.getElementById('tierDesc').textContent=info.desc;renderDimensions(final.dimensions);}
+function renderDimensions(dn){
+  const colors={pioneering:'#2E5A28',emerging:'#1B7A68',developing:'#B8842A',early:'#C24A2E'};
+  const labels={green:'Green Space Access',air:'Air & Acoustic Quality',civic:'Cognitive Accessibility of Civic Spaces',policy:'Policy Legibility',participation:'Participation Infrastructure',trauma:'Trauma-Informed Planning'};
+  const c=document.getElementById('dimensionsSection');
+  c.innerHTML='';
+  Object.keys(dn).forEach(key=>{
+    const score=dn[key],tier=getTier(score),label=labels[key]||key;
+    const finding=(DIM_FINDINGS[key]&&DIM_FINDINGS[key][tier])||('Score: '+score+'/100');
+    c.innerHTML+=`<div class="dimension-row"><div class="dim-header"><span class="dim-name">${label}</span><span class="dim-tier ${tier}">${tier==='early'?'Early Stage':tier.charAt(0).toUpperCase()+tier.slice(1)}</span></div><div class="dim-bar-rail"><div class="dim-bar-fill" style="width:${score}%;background:${colors[tier]}"></div></div><p class="dim-finding">${finding}</p></div>`;
+  });
+}
+function submitGate(){const email=document.getElementById('gateEmail').value;if(!email||!email.includes('@')){document.getElementById('gateEmail').focus();return;}const org=document.getElementById('gateOrg').value;fetch('https://nsag-api.vercel.app/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,org,source:'nsag-m7',module:'M7',tier:getTier(Object.values(scores).reduce((a,b)=>a+b,0)/Object.keys(scores).length),scores,timestamp:new Date().toISOString()})}).catch(()=>{});document.getElementById('gateSuccess').style.display='block';document.getElementById('dimensionsSection').classList.remove('blurred');document.getElementById('gateSection').style.opacity='0.5';document.getElementById('gateSection').style.pointerEvents='none';}
+</script>
+</body>
+</html>
