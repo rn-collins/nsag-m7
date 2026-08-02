@@ -255,6 +255,7 @@ body{font-family:'Manrope',sans-serif;background:#F6F3EC!important;color:#1C1B1F
         <div class="intro-tag">M7 · Conscious Cities</div>
         <h1 class="intro-h">How well does your institution govern conscious cities?</h1>
         <p class="intro-sub">Seven built environment parameters explain 16% of variation in academic progress (Barrett et al., 2015). Evans (2003) confirmed neighborhood disorder, noise, and green space are independent mental health determinants. Most planning processes don't govern these effects.</p>
+        <p style="font-size:0.85rem;color:var(--text);line-height:1.6;margin:0 0 1.25rem;font-weight:500">Built for: city planners, zoning officials, elected local officials, and community developers who influence what gets approved. You'll leave with: a dimension-by-dimension view of where your planning process governs for mental health and equity, and where it governs for code compliance alone.</p>
         <p style="font-size:0.82rem;color:var(--muted);line-height:1.6;margin:-0.25rem 0 1.5rem;padding:0.75rem 1rem;background:rgba(0,0,0,0.03);border-radius:8px">This is an educational self-assessment, not a validated test or audit. Your answers stay in your browser to build your result. At the end you can enter an email to receive the PDF report — used only for your report and optional NSAG follow-up, never sold or shared.</p>
         <div class="intro-meta">
           <div class="meta-item"><div class="meta-num">12</div><div class="meta-label">Scenarios</div></div>
@@ -330,6 +331,15 @@ body{font-family:'Manrope',sans-serif;background:#F6F3EC!important;color:#1C1B1F
     <a href="https://nsag-m5.vercel.app" target="_blank" rel="noopener" style="color:var(--navy);font-weight:600">M5 · Biophilic Civic Infrastructure</a> — governs nature-access equity in civic institutions; a companion built-environment governance challenge.<br>
     <a href="https://nsag-m10.vercel.app" target="_blank" rel="noopener" style="color:var(--navy);font-weight:600">M10 · Healthcare Built Environment</a> — governs the built-environment standards inside healthcare institutions specifically.<br>
     <a href="https://nsag-m6.vercel.app" target="_blank" rel="noopener" style="color:var(--navy);font-weight:600">M6 · Ethical Civic Sponsorship</a> — governs conflict-of-interest and influence standards for civic institutions.
+  </div>
+</div>
+
+<div style="max-width:640px;margin:0 auto;padding:0 2rem 1.5rem;box-sizing:border-box">
+  <div class="module-suggest" style="line-height:1.7">
+    <strong style="font-family:Syne,sans-serif;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy)">Why This Module Exists</strong><br><br>
+    Urban planning decisions are usually governed for safety, code compliance, and cost — rarely for their psychological and public-health consequences, even though those consequences are measurable. Evans (2003) found that neighborhood disorder, ambient noise, and access to green space independently predict mental health outcomes, controlling for income and other confounds. Separately, Barrett and colleagues' multi-year study of primary school classrooms found that seven physical design parameters explained 16% of the variance in pupils' academic progress — a reminder that built-environment effects on cognition and wellbeing are large enough to measure, not speculative.<br><br>
+    Most planning processes have no mechanism for acting on this evidence. A project can satisfy every zoning and safety requirement and still concentrate noise, remove green space, or isolate a neighborhood from the rest of the city — because none of the six dimensions this module measures (mental health impact assessment, green space governance, acoustic standards, housing quality and density, mobility and access equity, and community participation) are typically a formal sign-off requirement. Conscious-cities governance means making at least one of them a standing requirement before the next capital project is approved, rather than a topic raised only when a resident complains.
+    <div style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid var(--border);font-size:0.72rem;color:var(--muted)">Last reviewed August 2026. Zoning, environmental-review, and public-health planning requirements vary by jurisdiction and change with local ordinance cycles — confirm current requirements with your planning authority before adopting policy language.</div>
   </div>
 </div>
 
@@ -545,32 +555,32 @@ function revealResults() {
 
   if (avg >= 3.5) {
     tier = 'PIONEERING'; tierColor = '#2E5A28';
-    rec = 'Your organization is functioning as a genuinely trauma-informed legal environment. Standards are written, tracked, and tied to named accountability. The governance work at this tier is durability — ensuring these standards survive personnel transitions because they are written into policy, so they hold when the people who built them move on.';
+    rec = 'Your institution treats the built environment as a governed public-health variable, not an aesthetic afterthought. Mental health impact assessment, green space equity, acoustic standards, housing density, mobility access, and community authority are documented, measured, and reviewed. The work at this tier is durability — keeping these standards from depending on whichever planner or councilmember happened to champion them.';
     bridgeLabel = 'What to do with a PIONEERING result';
     bridgeText = 'Your governance is operational. The M7 Governance Toolkit contains the measurement framework and documentation audit tools to confirm your governance will survive leadership transitions. The NSAG advisory engagement benchmarks you against peers and builds quarterly accountability.';
     bridgeBtns = '<a href="' + 'https://nsag-site.vercel.app/advisory' + '" target="_blank" class="bridge-btn-primary" style="background:#2E5A28">Book an Advisory Engagement</a>'
               + '<a href="' + BOOK + '" class="bridge-btn-secondary" style="border:1.5px solid #2E5A28;color:#2E5A28">20-Min Discovery Call</a>';
-    crossModule = 'At PIONEERING tier: consider benchmarking against peer institutions through the NSAG cohort program, and taking the M2 Challenge if your organization uses any AI-assisted legal tools.';
+    crossModule = 'At PIONEERING tier: benchmark against peer municipalities through the NSAG cohort program, and take the M5 Challenge if your green-space governance overlaps with civic-institution nature-access standards more broadly.';
   } else if (avg >= 2.5) {
     tier = 'EMERGING'; tierColor = '#4D45A8';
-    rec = 'Your organization has meaningful trauma-informed practices in place but they are not yet systemic. Most institutions at this tier cross into PIONEERING within one advisory engagement cycle focused on the lowest-scoring dimensions.';
+    rec = 'Your institution has real conscious-cities practices in place, but they are not yet systemic across all six dimensions. Most institutions at this tier reach PIONEERING within one planning cycle focused on the lowest-scoring dimension.';
     bridgeLabel = 'What to do with an EMERGING result';
     bridgeText = 'You have governance in place. The gap to PIONEERING is in dimensions that are partially implemented — practice exists but policy does not. The M7 Governance Toolkit contains specific policy language for each gap and a 90-day roadmap for institutions at your exact tier.';
     bridgeBtns = '<a href="' + GUMROAD + '" target="_blank" class="bridge-btn-primary" style="background:#4D45A8">Get the M7 Governance Toolkit — $500</a>'
               + '<a href="' + BOOK + '" class="bridge-btn-secondary" style="border:1.5px solid #4D45A8;color:#4D45A8">Book a Discovery Call</a>';
-    crossModule = 'If your ' + DIM_NAMES[minDim] + ' score is your lowest gap, the M' + (minDim < 2 ? '2' : minDim < 4 ? '8' : '2') + ' Challenge addresses the governance infrastructure most likely to accelerate your progress in that dimension.';
+    crossModule = 'Your lowest dimension, ' + DIM_NAMES[minDim] + ', is where a focused planning-policy cycle will move you fastest toward PIONEERING.';
   } else if (avg >= 1.5) {
     tier = 'DEVELOPING'; tierColor = '#956B18';
-    rec = 'Your organization is meeting baseline legal requirements without yet designing for the physiological realities of trauma. Governance exists in some dimensions but depends on individual champions rather than institutional policy. When that person leaves, the governance leaves with them.';
+    rec = 'Your institution is meeting baseline land-use and zoning requirements without yet governing for the documented mental-health and equity effects of design decisions. Governance exists in pockets — a green-space requirement here, a noise ordinance there — but depends on which staff or councilmembers happen to raise it, not on a standing framework.';
     bridgeLabel = 'What to do with a DEVELOPING result';
     bridgeText = 'Your practices work — right now they live in the people who carry them. Writing them into policy is what makes them hold when those people move on. The M7 Governance Toolkit contains policy language templates for all six dimensions, a 90-day action plan built for DEVELOPING institutions, and the measurement framework for proving progress to leadership.';
     bridgeBtns = '<a href="' + GUMROAD + '" target="_blank" class="bridge-btn-primary" style="background:#956B18">Get the M7 Governance Toolkit — $500</a>'
               + '<a href="' + BOOK + '" class="bridge-btn-secondary" style="border:1.5px solid #956B18;color:#956B18">Book a Discovery Call</a>';
-    pioneeringExample = 'What PIONEERING looks like in practice: A legal aid organization in Chicago implemented a trauma-informed waiting room assessment, plain language intake forms tested with clients, and mandatory 20-minute staff debriefs after high-stress interactions. Within 6 months their client satisfaction scores improved 34% and staff reported significantly lower secondary traumatic stress symptoms.';
-    crossModule = 'Your ' + DIM_NAMES[minDim] + ' gap is the highest-leverage starting point. Once M1 governance is in place, take the M2 Challenge if you use any AI or algorithmic tools in client intake or case management.';
+    pioneeringExample = 'What PIONEERING looks like on the way there: A mid-size planning department added a green-space equity map to its comprehensive plan review and began requiring acoustic-impact statements for developments near residential zones. The remaining gap was community participation — public comment existed, but no resident held decision authority — which the department addressed by seating two community representatives on its design review board.';
+    crossModule = 'Your ' + DIM_NAMES[minDim] + ' gap is the highest-leverage starting point. If your city\'s built-environment governance includes healthcare facilities, the M10 Challenge addresses those standards specifically.';
   } else {
     tier = 'EARLY STAGE'; tierColor = '#6B2937';
-    rec = 'Your legal space is producing conditions most likely to re-traumatize the clients you serve. This is a design problem with a design solution. The fastest path forward is not a committee — it is one concrete action this week and governance language in your hands before Monday.';
+    rec = 'Your planning decisions are being made without visibility into their mental-health, acoustic, or equity consequences — consequences the built-environment research base says are measurable and foreseeable. This is a design-governance problem with a design-governance solution: one framework, applied to the next project on your desk, is where PIONEERING institutions started.';
     bridgeLabel = 'What to do with an EARLY STAGE result';
     bridgeText = 'Most institutions begin here. The fastest path out is one concrete action this week and a governance document in your hands. The M7 Governance Toolkit gives you a 90-day roadmap, specific policy language, and measurement criteria to prove progress to leadership.';
     bridgeBtns = '<a href="' + GUMROAD + '" target="_blank" class="bridge-btn-primary" style="background:#6B2937">Get the M7 Governance Toolkit — $500</a>'
