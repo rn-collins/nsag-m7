@@ -1,6 +1,6 @@
-# NSAG M7 — Workforce Competency
+# NSAG M7 — Conscious Cities
 
-Retired NSAG prototype module covering Workforce Competency.
+Retired standalone deployment of NSAG module M7, Conscious Cities (Civic & Built Environment). The module's canonical page is https://nsag-site.vercel.app/m7.
 
 **Live:** https://nsag-m7.vercel.app
 
@@ -10,7 +10,7 @@ This prototype has been retired. The deployment remains online as a record; it i
 
 ## Repository contents
 
-`index.html`, `vercel.json`
+`index.html`, `vercel.json`, `og.png`, `favicon.svg`, `apple-touch-icon.png`
 
 ## Local development
 
